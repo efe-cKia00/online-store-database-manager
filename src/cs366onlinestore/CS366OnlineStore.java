@@ -2,19 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
+
 package cs366onlinestore;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
 
 /**
- *
- * @author deafv
+ * @author Zachary Adolphsen
+ * @author Efe Awo-Osagie
+ * @author Kal Larson
  */
-public class CS366OnlineStore {
 
+public class CS366OnlineStore {
+    static String jdbcURL = "jdbc:postgresql://localhost:5432/INSERT_DB_NAME";
+    static String username = "postgres";
+    static String password = "UseYourPassword";
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
     }
-    /** THis is a test **/
+
 }
