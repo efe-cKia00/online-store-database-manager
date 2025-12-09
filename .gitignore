@@ -24,5 +24,4 @@
 .DS_Store
 Thumbs.db
 
-# already in github project
-src/cs366onlinestore/dbManager.java
+/src/cs366onlinestore/dbManager.java
