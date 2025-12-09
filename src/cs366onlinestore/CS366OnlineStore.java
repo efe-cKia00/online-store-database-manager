@@ -19,15 +19,21 @@ import java.util.Scanner;
  */
 
 public class CS366OnlineStore {
-    static String jdbcURL = "jdbc:postgresql://localhost:5432/INSERT_DB_NAME";
-    static String username = "postgres";
-    static String password = "UseYourPassword";
     
+    private static dbManager dbManager = new dbManager();
+    private static Connection dbcon;  
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        //create connection
+        try{
+        dbcon = dbManager.createConnection();
+        System.out.println("Successful connection");
+        } catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
 }
