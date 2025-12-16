@@ -646,133 +646,155 @@ public class CS366OnlineStore {
     }
     
     private static void editExistingProduct(Scanner s) {
-        System.out.println("Enter the details of the product");
-        System.out.print("What's the name of the product: ");
-        String productname = s.next();
-        System.out.print("What is the product category: ");
-        int category = s.nextInt();
-        
-        //Get Product from Db
-        Product prod = prodDbOp.getProductRecord(productname, category);
-        if (prod == null) {
-            System.out.println("No Products Returned");
-            return;
-        }
-        System.out.println("=====================================");
-        System.out.println("SUCCESS GETTING PRODUCT!");
-        System.out.println("=====================================");
+    System.out.println("Enter the details of the product");
+    System.out.print("What's the name of the product: ");
+    String productname = s.next();
+    System.out.print("What is the product category: ");
+    int category = s.nextInt();
+    
+    s.nextLine(); // consume newline
+    
+    //Get Product from Db
+    Product prod = prodDbOp.getProductRecord(productname, category);
+    if (prod == null) {
+        System.out.println("No Products Returned");
+        return;
+    }
+    System.out.println("=====================================");
+    System.out.println("SUCCESS GETTING PRODUCT!");
+    System.out.println("=====================================");
 
-        int providerid_, category_, quantity_;
-        float unitprice_;
-        String productname_, description_;
+    int providerid_, category_, quantity_;
+    float unitprice_;
+    String productname_, description_;
 
-        // Edit Product Details
-        System.out.println("EDIT DETAILS");
-        System.out.println("=====================================");
-        
-        while (true) {
-            System.out.println("Edit the Provider? (Current = " + prod.getProviderId() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Provider");
-                providerid_ = prod.getProviderId();
-                break;
-            }
-            if (input.matches("[a-zA-Z]+")) {
-                providerid_ = input;
-                break;
-            }
-            System.out.println("Invalid Provider id. Must only bontain numbers");
+    // Edit Product Details
+    System.out.println("EDIT DETAILS");
+    System.out.println("=====================================");
+    
+    // PROVIDER ID
+    while (true) {
+        System.out.println("Edit the Provider ID? (Current = " + prod.getProviderId() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Provider ID");
+            providerid_ = prod.getProviderId();
+            break;
         }
-        
-        while (true) {
-            System.out.println("Edit the Product Category? (Current = " + prod.getCategory() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Category");
-                category_ = prod.getCategory();
+        try {
+            providerid_ = Integer.parseInt(input);
+            if (providerid_ > 0) {
                 break;
             }
-            if (input.matches("[a-zA-Z]+")) {
-                category_ = input;
-                break;
-            }
-            System.out.println("Invalid Category id. Must only bontain numbers");
+            System.out.println("Invalid Provider ID. Must be a positive number");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Provider ID. Must only contain numbers");
         }
-        
-        while (true) {
-            System.out.println("Edit the Product Quantity (Current = " + prod.getQuantity() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Category");
-                category_ = prod.getQuantity();
-                break;
-            }
-            if (input.matches("[a-zA-Z]+")) {
-                category_ = input;
-                break;
-            }
-            System.out.println("Invalid Category id. Must only bontain numbers");
+    }
+    
+    // CATEGORY
+    while (true) {
+        System.out.println("Edit the Product Category? (Current = " + prod.getCategory() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Category");
+            category_ = prod.getCategory();
+            break;
         }
-        
-        while (true) {
-            System.out.println("Edit the Product Price? (Current = " + prod.getUnitPrice() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Category");
-                unitprice_ = prod.getUnitPrice();
+        try {
+            category_ = Integer.parseInt(input);
+            if (category_ > 0) {
                 break;
             }
-            if (input.matches("[a-zA-Z]+")) {
-                unitprice_ = input;
-                break;
-            }
-            System.out.println("Invalid Category id. Must only bontain numbers");
+            System.out.println("Invalid Category. Must be a positive number");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Category. Must only contain numbers");
         }
-        
-        while (true) {
-            System.out.println("Edit the Product Name? (Current = " + prod.getProductName() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Category");
-                productname_ = prod.getProductName();
-                break;
-            }
-            if (input.matches("[a-zA-Z]+")) {
-                productname_ = input;
-                break;
-            }
-            System.out.println("Invalid Category id. Must only bontain numbers");
+    }
+    
+    // QUANTITY
+    while (true) {
+        System.out.println("Edit the Product Quantity? (Current = " + prod.getQuantity() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Quantity");
+            quantity_ = prod.getQuantity();
+            break;
         }
-        
-        while (true) {
-            System.out.println("Edit the Product Description? (Current = " + prod.getDescription() + "): ");
-            String input = s.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Skipping Category");
-                description_ = prod.getDescription();
+        try {
+            quantity_ = Integer.parseInt(input);
+            if (quantity_ >= 0) {
                 break;
             }
-            if (input.matches("[a-zA-Z]+")) {
-                description_ = input;
-                break;
-            }
-            System.out.println("Invalid Category id. Must only bontain numbers");
+            System.out.println("Invalid Quantity. Must be zero or positive");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Quantity. Must only contain numbers");
         }
-        
-        // make updated product
-        Product updatedProd = new Product(
-                prod.getProductId(),
-                providerid_,
-                category_,
-                quantity_,
-                unitprice_,
-                productname_,
-                description_
-        );
+    }
+    
+    // UNIT PRICE
+    while (true) {
+        System.out.println("Edit the Product Price? (Current = " + prod.getUnitPrice() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Price");
+            unitprice_ = prod.getUnitPrice();
+            break;
+        }
+        try {
+            unitprice_ = Float.parseFloat(input);
+            if (unitprice_ > 0) {
+                break;
+            }
+            System.out.println("Invalid Price. Must be a positive number");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Price. Must be a valid number");
+        }
+    }
+    
+    // PRODUCT NAME
+    while (true) {
+        System.out.println("Edit the Product Name? (Current = " + prod.getProductName() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Product Name");
+            productname_ = prod.getProductName();
+            break;
+        }
+        if (input.matches("^[a-zA-Z0-9\\s]+$")) {
+            productname_ = input;
+            break;
+        }
+        System.out.println("Invalid Product Name. Letters, numbers, and spaces allowed");
+    }
+    
+    // DESCRIPTION
+    while (true) {
+        System.out.println("Edit the Product Description? (Current = " + prod.getDescription() + "): ");
+        String input = s.nextLine().trim();
+        if (input.isEmpty()) {
+            System.out.println("Skipping Description");
+            description_ = prod.getDescription();
+            break;
+        }
+        // Allow any non-empty description
+        description_ = input;
+        break;
+    }
+    
+    // make updated product
+    Product updatedProd = new Product(
+            prod.getProductId(),
+            providerid_,
+            category_,            
+            quantity_,
+            unitprice_,
+            productname_,
+            description_
+    );
 
-        //send it to the db
-        prodDbOp.editProductRecord(updatedProd);
+    //send it to the db
+    prodDbOp.editProductRecord(updatedProd);
     }
     
     private static void viewProductPriceChangeHistory() {

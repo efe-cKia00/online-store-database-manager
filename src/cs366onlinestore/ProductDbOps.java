@@ -49,51 +49,78 @@ public class ProductDbOps {
         }
     }
     
-    public Product getProductRecord(String productName, int productId) {
-        try {
-            String getProduct = "SELECT * FROM product WHERE product_name = ? AND category_id = ?";
-
-            PreparedStatement pstmt = dbcon.prepareStatement(getProduct);
-            // Set parameters for the prepared statement
-            pstmt.setString(1, productName);
-            pstmt.setInt(2, productId);
-            
-            // Execute the query
-            ResultSet rs = pstmt.executeQuery();
-            
-            if(rs.next()) {
-                int id = rs.getInt("product_id");
-                int providerid = rs.getInt("provider_id");
-                int categoryid = rs.getInt("category_id");
-                String productname = rs.getString("product_name");
-                String description = rs.getString("description");
-                
-            }
-        } catch (SQLException e) {
+    public Product getProductRecord(String productName, int category) {
+    String getProduct = "SELECT * FROM products WHERE product_name = ? AND category = ?";
+    
+    try (PreparedStatement pstmt = dbcon.prepareStatement(getProduct)) {
+        // Set parameters for the prepared statement
+        pstmt.setString(1, productName);
+        pstmt.setInt(2, category);
         
+        // Execute the query
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            int productId = rs.getInt("product_id");
+            int providerId = rs.getInt("provider_id");
+            int categoryId = rs.getInt("category");
+            String prodName = rs.getString("product_name");
+            String description = rs.getString("description");
+            int quantity = rs.getInt("quantity");
+            float unitPrice = rs.getFloat("unit_price");
+            
+            // Create and return the Product object
+            Product prod = new Product(
+                productId,
+                providerId,
+                categoryId,
+                quantity,
+                unitPrice,
+                prodName,
+                description                                
+            );
+            
+            System.out.println("Product found: " + prodName);
+            return prod;
+        } else {
+            System.out.println("No product found with name: " + productName + " and category: " + category);
+            return null;
+        }
+        
+        } catch (SQLException e) {
+            System.out.println("Error retrieving product: " + e.getLocalizedMessage());
+            e.printStackTrace();
+            return null;
         }
     }
     
     public void editProductRecord(Product prod) {
-        try {
-            String updateCustomer = "UPDATE product "
-                    + "SET firstname = ?, lastname = ?, email = ?, "
-                    + "phone = ?, street = ?, city = ?, state = ?, zip = ? "
-                    + "WHERE customer_id = ?";
-            PreparedStatement pstmt = dbcon.prepareStatement(updateCustomer);
-            pstmt.setString(1, prod.getProviderId());
-            pstmt.setString(2, prod.getLastName());
-            pstmt.setString(3, prod.getEmail());
-            pstmt.setString(4, prod.getPhone());
-            pstmt.setString(5, prod.getStreet());
-            pstmt.setString(6, prod.getCity());
-            pstmt.setString(7, prod.getState());
-            pstmt.setString(8, cust.getZip());
-            pstmt.setInt(9, cust.getId());
-
-            pstmt.executeUpdate();
+    String updateProduct = "UPDATE products "
+            + "SET provider_id = ?, category = ?, product_name = ?, "
+            + "description = ?, quantity = ?, unit_price = ? "
+            + "WHERE product_id = ?";
+    
+    try (PreparedStatement pstmt = dbcon.prepareStatement(updateProduct)) {
+        // Set the values in order
+        pstmt.setInt(1, prod.getProviderId());
+        pstmt.setInt(2, prod.getCategory());
+        pstmt.setString(3, prod.getProductName());
+        pstmt.setString(4, prod.getDescription());
+        pstmt.setInt(5, prod.getQuantity());
+        pstmt.setFloat(6, prod.getUnitPrice());
+        pstmt.setInt(7, prod.getProductId()); // WHERE clause
+        
+        int rowsAffected = pstmt.executeUpdate();
+        
+        if (rowsAffected > 0) {
+            System.out.println("Product successfully updated!");
+        } else {
+            System.out.println("No product found with that ID.");
+        }
+        
         } catch (SQLException e) {
-            System.out.println("Error Updating Customer: " + e.getLocalizedMessage());
+            System.out.println("Error Updating Product: " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 }
