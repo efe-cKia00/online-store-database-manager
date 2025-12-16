@@ -22,6 +22,7 @@ public class CS366OnlineStore {
     private static dbManager dbManager = new dbManager();
     private static Connection dbcon;
     private static CustomerDbOps custDbOp;
+    private static CustomerOrderDbOps custOrderDbOp;
 
     /**
      * @param args the command line arguments
@@ -34,6 +35,7 @@ public class CS366OnlineStore {
                 return; // Stop the program here!
             }
             custDbOp = new CustomerDbOps(dbcon);
+            custOrderDbOp = new CustomerOrderDbOps(dbcon);
             System.out.println("Success");
         } catch (SQLException e) {
             System.out.println("Error: " + e.getLocalizedMessage());
@@ -60,8 +62,8 @@ public class CS366OnlineStore {
                 }
                 case 2 ->
                     runCustomerMenu(scan);
-                case 3 -> { //runOrderMenu
-                }
+                case 3 ->
+                    runCustomerOrderMenu(scan);
                 case 0 -> {
                     running = false;
                     System.out.println("Exiting system. Goodbye!");
@@ -104,6 +106,30 @@ public class CS366OnlineStore {
                     RemoveCustomer(s);
                 case 4 ->
                     GetAllCustomers();
+                case 0 ->
+                    inMenu = false;
+                default ->
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+
+    private static void runCustomerOrderMenu(Scanner s) {
+        boolean inMenu = true;
+        while (inMenu) {
+            System.out.println("\n--- CUSTOMER ORDER MANAGEMENT MENU ---");
+            System.out.println("1) View all orders for a given customer");
+            System.out.println("2) View all products ordered by customer");
+            System.out.println("0) Back to Main Menu");
+            System.out.print("Select Action: ");
+
+            int choice = getUserInput(s);
+
+            switch (choice) {
+                case 1 ->
+                    GetCustomerOrderHistory(s);
+                case 2 ->
+                    GetCustomerOrderedProductHistory(s);
                 case 0 ->
                     inMenu = false;
                 default ->
@@ -216,14 +242,14 @@ public class CS366OnlineStore {
         System.out.println("=====================================");
         System.out.println("SUCCESS GETTING CUSTOMER!");
         System.out.println("=====================================");
-        
+
         String fname, lname, email, phone, street, city, state, zip;
 
         // Edit Customers Details
         System.out.println("EDIT DETAILS");
         System.out.println("=====================================");
-        
-        while(true){
+
+        while (true) {
             System.out.println("Edit First Name? (Current = " + cust.getFirstName() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -231,14 +257,14 @@ public class CS366OnlineStore {
                 fname = cust.getFirstName();
                 break;
             }
-            if(input.matches("[a-zA-Z]+")){
+            if (input.matches("[a-zA-Z]+")) {
                 fname = input;
                 break;
             }
             System.out.println("Invalid first name. Must only contain letters");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit Last Name? (Current = " + cust.getLastName() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -246,14 +272,14 @@ public class CS366OnlineStore {
                 lname = cust.getLastName();
                 break;
             }
-            if(input.matches("[a-zA-Z]+")){
+            if (input.matches("[a-zA-Z]+")) {
                 lname = input;
                 break;
             }
             System.out.println("Invalid last name. Must only contain letters");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit Email? (Current = " + cust.getEmail() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -261,14 +287,14 @@ public class CS366OnlineStore {
                 email = cust.getEmail();
                 break;
             }
-            if(input.matches("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,}$")){
+            if (input.matches("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,}$")) {
                 email = input;
                 break;
             }
             System.out.println("Invalid email");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit Phone? (Current = " + cust.getPhone() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -276,14 +302,14 @@ public class CS366OnlineStore {
                 phone = cust.getPhone();
                 break;
             }
-            if(input.matches("\\d{10}")){
+            if (input.matches("\\d{10}")) {
                 phone = input;
                 break;
             }
             System.out.println("Invalid phone number. Must only contain numbers");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit Street? (Current = " + cust.getStreet() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -291,14 +317,14 @@ public class CS366OnlineStore {
                 street = cust.getStreet();
                 break;
             }
-            if(input.matches("^[a-zA-Z0-9]+\\s+[a-zA-Z0-9\\s.,'-]+$")){
+            if (input.matches("^[a-zA-Z0-9]+\\s+[a-zA-Z0-9\\s.,'-]+$")) {
                 street = input;
                 break;
             }
             System.out.println("Invalid Street. Must only contain numbers, letters, and spaces");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit City? (Current = " + cust.getCity() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -313,7 +339,7 @@ public class CS366OnlineStore {
             System.out.println("Invalid City. Must only contain letters");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit State? (Current = " + cust.getState() + "): ");
             String input = s.nextLine().trim().toUpperCase();
             if (input.isEmpty()) {
@@ -328,7 +354,7 @@ public class CS366OnlineStore {
             System.out.println("Invalid State. Must be 2 letter abbreviation");
         }
 
-        while(true){
+        while (true) {
             System.out.println("Edit ZIP? (Current = " + cust.getZip() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
@@ -397,4 +423,67 @@ public class CS366OnlineStore {
         }
 
     }
+    
+    public static void GetCustomerOrderHistory(Scanner s){
+         // Get fname and lname of Customer to edit
+        System.out.println("Enter Details of Customer");
+        System.out.println("Customers First Name:");
+        String firstname = s.next().trim();
+        System.out.println("Customers Last Name: ");
+        String lastname = s.next().trim();
+        System.out.println("Customers Email: ");
+        String custEmail = s.next().trim();
+
+        s.nextLine();
+        
+        ResultSet rs = custOrderDbOp.viewCustomerOrderHistory(firstname, lastname, custEmail);
+        
+        if (rs == null) {
+            System.out.println("No Orders Found");
+            return;
+        }
+        try {
+            System.out.println("Customer Orders");
+            while (rs.next()) {
+                System.out.println("=====================================");
+                System.out.println("Order Id: " + rs.getString("order_id"));
+                System.out.println("Order Time: " + rs.getString("order_date"));
+                System.out.println("Order Price: " + rs.getString("total_order_price"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting all customer records: " + e.getLocalizedMessage());
+        }
+    }
+    
+    public static void GetCustomerOrderedProductHistory(Scanner s){
+         // Get fname and lname of Customer to edit
+        System.out.println("Enter Details of Customer");
+        System.out.println("Customers First Name:");
+        String firstname = s.next().trim();
+        System.out.println("Customers Last Name: ");
+        String lastname = s.next().trim();
+        System.out.println("Customers Email: ");
+        String custEmail = s.next().trim();
+
+        s.nextLine();
+        
+        ResultSet rs = custOrderDbOp.viewProductsOrderedByCustomer(firstname, lastname, custEmail);
+        
+        if (rs == null) {
+            System.out.println("No Orders Found");
+            return;
+        }
+        try {
+            System.out.println("Customer Orders");
+            while (rs.next()) {
+                System.out.println("=====================================");
+                System.out.println("Product Name: " + rs.getString("productName"));
+                System.out.println("Quantity Ordered: " + rs.getString("quantity_ordered"));
+                System.out.println("Product Order Price: " + rs.getString("product_order_price"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting all customer records: " + e.getLocalizedMessage());
+        }
+    }
+
 }
