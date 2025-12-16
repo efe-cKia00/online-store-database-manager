@@ -541,7 +541,6 @@ public class CS366OnlineStore {
 
             } catch (Exception e) {
                 System.out.println("Invalid input. Only numbers allowed.");
-                s.nextLine();
             }
         }
 
@@ -590,14 +589,13 @@ public class CS366OnlineStore {
             System.out.println("Enter the quantity: ");
             try {
                 quantity = s.nextInt();
-                s.nextLine(); // consume newline
+                s.nextLine();
                 if (quantity >= 0) {
                     break;
                 }
                 System.out.println("Invalid quantity. Must be zero or positive.");
             } catch (Exception e) {
                 System.out.println("Invalid input. Only numbers allowed.");
-                s.nextLine(); // clear invalid input
             }
         }
 
@@ -606,14 +604,13 @@ public class CS366OnlineStore {
             System.out.println("Enter the unit price: ");
             try {
                 unitPrice = s.nextFloat();
-                s.nextLine(); // consume newline
+                s.nextLine();
                 if (unitPrice > 0) {
                     break;
                 }
                 System.out.println("Invalid unit price. Must be a positive number.");
             } catch (Exception e) {
                 System.out.println("Invalid input. Only numbers allowed.");
-                s.nextLine(); // clear invalid input
             }
         }
 
@@ -632,7 +629,7 @@ public class CS366OnlineStore {
         System.out.print("What is the product category number: ");
         int category = s.nextInt();
 
-        s.nextLine(); // consume newline
+        s.nextLine();
 
         //Get Product from Db
         Product prod = prodDbOp.getProductRecord(productname, category);
@@ -685,7 +682,7 @@ public class CS366OnlineStore {
             }
             try {
                 category_ = Integer.parseInt(input);
-               if (validCategoryIds.contains(category_)) {
+                if (validCategoryIds.contains(category_)) {
                     break;
                 }
                 System.out.println("Invalid Category. Must be a positive number");
@@ -761,7 +758,6 @@ public class CS366OnlineStore {
                 description_ = prod.getDescription();
                 break;
             }
-            // Allow any non-empty description
             description_ = input;
             break;
         }

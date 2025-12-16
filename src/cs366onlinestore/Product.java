@@ -84,22 +84,4 @@ public class Product {
     public void setUnitPrice(float unitPrice) {
         this.unitPrice = unitPrice;
     }
-
-    public List<Product> filterByProvider(String providerName) {
-        return new ArrayList<>();
-    }
-
-    public List<Product> filterByCategory(String category) {
-        return new ArrayList<>();
-    }
-
-    public boolean isAvailable() {
-        return quantity > 0;
-    }
-
-    public void addQuantity(int amount) {
-        if (amount > 0) {
-            quantity += amount;
-        }
-    }
 }

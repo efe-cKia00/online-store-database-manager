@@ -3,18 +3,10 @@ package cs366onlinestore;
 public class OrderLine {
 
     private int orderLineId;
-
     private int orderId;
-
     private int productId;
-
     private float unitPrice;
-
     private int quantity;
-
-    // Constructors
-    public OrderLine() {
-    }
 
     public OrderLine(int orderLineId, int orderId, int productId,
             float unitPrice, int quantity) {

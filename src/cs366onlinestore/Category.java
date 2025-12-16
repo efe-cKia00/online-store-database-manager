@@ -2,17 +2,13 @@ package cs366onlinestore;
 
 public class Category {
 
-    // ---------- Fields (from UML) ----------
     private int categoryId;
     private String name;
-    private String description;
 
     public Category(int categoryId,
-            String name,
-            String description) {
+            String name) {
         this.categoryId = categoryId;
         this.name = name;
-        this.description = description;
     }
 
     public int getCategoryId() {
@@ -29,13 +25,5 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }
