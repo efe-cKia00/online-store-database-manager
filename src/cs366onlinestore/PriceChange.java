@@ -1,26 +1,20 @@
-
 package cs366onlinestore;
 
 import java.time.LocalDateTime;
 
 public class PriceChange {
-    // ---------- Fields (from UML) ----------
+
     private int priceChangeId;
     private int productId;
     private float oldPrice;
     private float newPrice;
     private LocalDateTime changeDate;
 
-    // ---------- Constructors ----------
-    public PriceChange() {
-        // no-arg constructor
-    }
-
     public PriceChange(int priceChangeId,
-                       int productId,
-                       float oldPrice,
-                       float newPrice,
-                       LocalDateTime changeDate) {
+            int productId,
+            float oldPrice,
+            float newPrice,
+            LocalDateTime changeDate) {
 
         this.priceChangeId = priceChangeId;
         this.productId = productId;
@@ -29,7 +23,6 @@ public class PriceChange {
         this.changeDate = changeDate;
     }
 
-    // ---------- Getters / Setters ----------
     public int getPriceChangeId() {
         return priceChangeId;
     }
@@ -68,16 +61,5 @@ public class PriceChange {
 
     public void setChangeDate(LocalDateTime changeDate) {
         this.changeDate = changeDate;
-    }
-
-    @Override
-    public String toString() {
-        return "PriceChange{" +
-                "priceChangeId=" + priceChangeId +
-                ", productId=" + productId +
-                ", oldPrice=" + oldPrice +
-                ", newPrice=" + newPrice +
-                ", changeDate=" + changeDate +
-                '}';
     }
 }

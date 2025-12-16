@@ -1,31 +1,29 @@
-
 package cs366onlinestore;
 
 public class OrderLine {
-    
+
     private int orderLineId;
-    
+
     private int orderId;
-    
+
     private int productId;
-    
+
     private float unitPrice;
-    
+
     private int quantity;
-    
+
     // Constructors
-    public OrderLine(){}
-    
-    public OrderLine(int orderLineId, int orderId, int productId, 
-            float unitPrice, int quantity){
+    public OrderLine() {
+    }
+
+    public OrderLine(int orderLineId, int orderId, int productId,
+            float unitPrice, int quantity) {
         this.orderLineId = orderLineId;
         this.orderId = orderId;
         this.productId = productId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
-    
-    // ---------- Getters / Setters ----------
 
     public int getOrderLineId() {
         return orderLineId;
@@ -67,20 +65,7 @@ public class OrderLine {
         this.quantity = quantity;
     }
 
-    public float getLineTotal( ) {
+    public float getLineTotal() {
         return unitPrice * quantity;
     }
-    
-    @Override
-    public String toString() {
-        return "OrderLine{" +
-                "orderLineId=" + orderLineId +
-                ", orderId=" + orderId +
-                ", productId=" + productId +
-                ", unitPrice=" + unitPrice +
-                ", quantity=" + quantity +
-                ", lineTotal=" + getLineTotal() +
-                '}';
-    }
-    
 }

@@ -37,6 +37,7 @@ public class CS366OnlineStore {
             }
             custDbOp = new CustomerDbOps(dbcon);
             custOrderDbOp = new CustomerOrderDbOps(dbcon);
+            prodDbOp = new ProductDbOps(dbcon);
             System.out.println("Success");
         } catch (SQLException e) {
             System.out.println("Error: " + e.getLocalizedMessage());
@@ -59,9 +60,8 @@ public class CS366OnlineStore {
             int choice = getUserInput(scan);
 
             switch (choice) {
-                case 1 -> {
+                case 1 ->
                     runProductMenu(scan);
-                }
                 case 2 ->
                     runCustomerMenu(scan);
                 case 3 ->
@@ -128,13 +128,16 @@ public class CS366OnlineStore {
             int choice = getUserInput(s);
 
             switch (choice) {
-                case 1 ->
+                case 1:
                     GetCustomerOrderHistory(s);
-                case 2 ->
+                    break;
+                case 2:
                     GetCustomerOrderedProductHistory(s);
-                case 0 ->
+                    break;
+                case 0:
                     inMenu = false;
-                default ->
+                    break;
+                default:
                     System.out.println("Invalid option.");
             }
         }
@@ -486,9 +489,6 @@ public class CS366OnlineStore {
         } catch (SQLException e) {
             System.out.println("Error getting all customer records: " + e.getLocalizedMessage());
         }
-        Scanner scan = new Scanner(System.in);
-
-        AddCustomer(scan);
     }
 
     private static void runProductMenu(Scanner s) {
@@ -623,8 +623,8 @@ public class CS366OnlineStore {
     private static void editExistingProduct(Scanner s) {
         System.out.println("Enter the details of the product");
         System.out.print("What's the name of the product: ");
-        String productname = s.next();
-        System.out.print("What is the product category: ");
+        String productname = s.nextLine();
+        System.out.print("What is the product category number: ");
         int category = s.nextInt();
 
         s.nextLine(); // consume newline
@@ -733,11 +733,11 @@ public class CS366OnlineStore {
 
         // PRODUCT NAME
         while (true) {
-            System.out.println("Edit the Product Name? (Current = " + prod.getProductName() + "): ");
+            System.out.println("Edit the Product Name? (Current = " + prod.getName() + "): ");
             String input = s.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("Skipping Product Name");
-                productname_ = prod.getProductName();
+                productname_ = prod.getName();
                 break;
             }
             if (input.matches("^[a-zA-Z0-9\\s]+$")) {
@@ -765,7 +765,7 @@ public class CS366OnlineStore {
         Product updatedProd = new Product(
                 prod.getProductId(),
                 providerid_,
-                category_,            
+                category_,
                 quantity_,
                 unitprice_,
                 productname_,
@@ -782,10 +782,10 @@ public class CS366OnlineStore {
         String productname = s.nextLine();
         System.out.print("What is the product category: ");
         String category = s.nextLine();
-        
+
         ResultSet rs = prodDbOp.getProductPriceChangeHistory(productname, category);
-        
-        if(rs == null){
+
+        if (rs == null) {
             System.out.println("No Products Found");
             return;
         }
@@ -805,35 +805,35 @@ public class CS366OnlineStore {
 
     private static void viewMostPopularItems() {
         ResultSet rs = prodDbOp.getMostPopularProduct();
-        
-        if(rs == null) {
+
+        if (rs == null) {
             System.out.println("No Products Found");
             return;
         }
-        try{
+        try {
             System.out.println("Most Popular Items");
             while (rs.next()) {
                 System.out.println("=====================================");
-                System.out.println("Product" + rs.getString("product_name"));
-                System.out.println("Description" + rs.getString("description"));
-                System.out.println("Total Sold" + rs.getString("total_sold"));
-                System.out.println("Price" + rs.getString("unit_Price"));
+                System.out.println("Product: " + rs.getString("product_name"));
+                System.out.println("Description: " + rs.getString("description"));
+                System.out.println("Total Sold: " + rs.getString("total_sold"));
+                System.out.println("Price: " + rs.getString("unit_Price"));
             }
-            
+
         } catch (SQLException e) {
-                    System.out.println("error getting item" + e.getLocalizedMessage());
-                    }
-                   
+            System.out.println("error getting item" + e.getLocalizedMessage());
+        }
+
     }
 
     private static void viewMostExpensiveProduct(Scanner s) {
         System.out.println("View Most Expensive Products");
         System.out.println("How Many Products do you want to see?");
         int numberOfItems = s.nextInt();
-        
+
         ResultSet rs = prodDbOp.getMostExpensiveProducts(numberOfItems);
-        
-        if(rs == null){
+
+        if (rs == null) {
             System.out.println("No Products Found");
             return;
         }

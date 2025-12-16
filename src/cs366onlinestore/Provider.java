@@ -1,9 +1,7 @@
-
 package cs366onlinestore;
 
-
 public class Provider {
-    // ---------- Fields (from UML) ----------
+
     private int providerId;
     private String name;
     private String phone;
@@ -12,18 +10,13 @@ public class Provider {
     private String state;
     private int zip;
 
-    // ---------- Constructors ----------
-    public Provider() {
-        // no-arg constructor
-    }
-
     public Provider(int providerId,
-                    String name,
-                    String phone,
-                    String street,
-                    String city,
-                    String state,
-                    int zip) {
+            String name,
+            String phone,
+            String street,
+            String city,
+            String state,
+            int zip) {
 
         this.providerId = providerId;
         this.name = name;
@@ -34,7 +27,6 @@ public class Provider {
         this.zip = zip;
     }
 
-    // ---------- Getters / Setters ----------
     public int getProviderId() {
         return providerId;
     }
@@ -89,18 +81,5 @@ public class Provider {
 
     public void setZip(int zip) {
         this.zip = zip;
-    }
-
-    @Override
-    public String toString() {
-        return "Provider{" +
-                "providerId=" + providerId +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip=" + zip +
-                '}';
     }
 }

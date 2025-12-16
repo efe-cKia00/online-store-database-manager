@@ -21,15 +21,29 @@ public class ProductDbOps {
     public ProductDbOps(Connection conn) {
         this.dbcon = conn;
     }
+    
+    public ResultSet getProviderInfo(){
+        String sql = "SELECT provider_id, provider_name FROM provider";
+        try{
+            PreparedStatement pstmt = dbcon.prepareStatement(sql);
+            
+            ResultSet rs = pstmt.executeQuery();
+            return rs;
+            
+        } catch (SQLException e) {
+            System.out.println("Error getting providers");
+        }
+        return null;
+    }
 
     public void insertProductInDb(Product prod) {
-        String sql = "INSERT INTO products (provider_id, category, product_name, description, quantity, unit_price) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO product (provider_id, category_id, product_name, description, quantity, unit_price) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = dbcon.prepareStatement(sql)) {
             // Set parameters for the prepared statement
             pstmt.setInt(1, prod.getProviderId());
             pstmt.setInt(2, prod.getCategory());
-            pstmt.setString(3, prod.getProductName());
+            pstmt.setString(3, prod.getName());
             pstmt.setString(4, prod.getDescription());
             pstmt.setInt(5, prod.getQuantity());
             pstmt.setFloat(6, prod.getUnitPrice());
@@ -45,12 +59,11 @@ public class ProductDbOps {
 
         } catch (SQLException e) {
             System.out.println("Error inserting product: " + e.getLocalizedMessage());
-            e.printStackTrace();
         }
     }
     
     public Product getProductRecord(String productName, int category) {
-    String getProduct = "SELECT * FROM products WHERE product_name = ? AND category = ?";
+    String getProduct = "SELECT * FROM product WHERE product_name = ? AND category_id = ?";
     
     try (PreparedStatement pstmt = dbcon.prepareStatement(getProduct)) {
         // Set parameters for the prepared statement
@@ -63,7 +76,7 @@ public class ProductDbOps {
         if (rs.next()) {
             int productId = rs.getInt("product_id");
             int providerId = rs.getInt("provider_id");
-            int categoryId = rs.getInt("category");
+            int categoryId = rs.getInt("category_id");
             String prodName = rs.getString("product_name");
             String description = rs.getString("description");
             int quantity = rs.getInt("quantity");
@@ -89,14 +102,13 @@ public class ProductDbOps {
         
         } catch (SQLException e) {
             System.out.println("Error retrieving product: " + e.getLocalizedMessage());
-            e.printStackTrace();
             return null;
         }
     }
 
     public void editProductRecord(Product prod) {
-        String updateProduct = "UPDATE products "
-                + "SET provider_id = ?, category = ?, product_name = ?, "
+        String updateProduct = "UPDATE product "
+                + "SET provider_id = ?, category_id = ?, product_name = ?, "
                 + "description = ?, quantity = ?, unit_price = ? "
                 + "WHERE product_id = ?";
 
@@ -104,7 +116,7 @@ public class ProductDbOps {
             // Set the values in order
             pstmt.setInt(1, prod.getProviderId());
             pstmt.setInt(2, prod.getCategory());
-            pstmt.setString(3, prod.getProductName());
+            pstmt.setString(3, prod.getName());
             pstmt.setString(4, prod.getDescription());
             pstmt.setInt(5, prod.getQuantity());
             pstmt.setFloat(6, prod.getUnitPrice());
@@ -119,18 +131,19 @@ public class ProductDbOps {
             }
             } catch (SQLException e) {
                 System.out.println("Error Updating Product: " + e.getLocalizedMessage());
-                e.printStackTrace();
             }
     }
 
     public ResultSet getProductPriceChangeHistory(String prodName, String prodCategory) {
         try {
             String getProductPriceHistory = "SELECT pc.old_price, pc.new_price, pc.reason_changed, pc.changed_at "
-                    + "FROM PriceChange pc "
-                    + "JOIN "
-                    + "Product p ON pc.product_id = p.product_id "
+                    + "FROM price_change pc "
+                    + "JOIN product AS p "
+                    + "ON pc.product_id = p.product_id "
+                    + "JOIN category AS c "
+                    + "ON p.category_id = c.category_id "
                     + "WHERE "
-                    + "p.name = ? AND p.category_id = ?";
+                    + "p.product_name = ? AND c.category_name = ?";
 
             PreparedStatement pstmt = dbcon.prepareStatement(getProductPriceHistory);
             pstmt.setString(1, prodName);
@@ -146,7 +159,7 @@ public class ProductDbOps {
 
     public ResultSet getMostExpensiveProducts(int n) {
         try {
-            String getMostExpensiveProducts = "SELECT p.name AS product_name, c.category_name, p.unit_price "
+            String getMostExpensiveProducts = "SELECT p.product_name AS product_name, c.category_name, p.unit_price "
                     + "FROM Product p "
                     + "JOIN "
                     + "Category c ON p.category_id = c.category_id "

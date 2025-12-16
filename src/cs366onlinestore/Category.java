@@ -1,27 +1,20 @@
-
 package cs366onlinestore;
 
-
 public class Category {
+
     // ---------- Fields (from UML) ----------
     private int categoryId;
     private String name;
     private String description;
 
-    // ---------- Constructors ----------
-    public Category() {
-        // no-arg constructor
-    }
-
     public Category(int categoryId,
-                    String name,
-                    String description) {
+            String name,
+            String description) {
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
     }
 
-    // ---------- Getters / Setters ----------
     public int getCategoryId() {
         return categoryId;
     }
@@ -44,14 +37,5 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "categoryId=" + categoryId +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 }
