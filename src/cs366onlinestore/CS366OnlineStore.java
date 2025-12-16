@@ -652,7 +652,127 @@ public class CS366OnlineStore {
         System.out.print("What is the product category: ");
         int category = s.nextInt();
         
+        //Get Product from Db
+        Product prod = prodDbOp.getProductRecord(productname, category);
+        if (prod == null) {
+            System.out.println("No Products Returned");
+            return;
+        }
+        System.out.println("=====================================");
+        System.out.println("SUCCESS GETTING PRODUCT!");
+        System.out.println("=====================================");
+
+        int providerid_, category_, quantity_;
+        float unitprice_;
+        String productname_, description_;
+
+        // Edit Product Details
+        System.out.println("EDIT DETAILS");
+        System.out.println("=====================================");
         
+        while (true) {
+            System.out.println("Edit the Provider? (Current = " + prod.getProviderId() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Provider");
+                providerid_ = prod.getProviderId();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                providerid_ = input;
+                break;
+            }
+            System.out.println("Invalid Provider id. Must only bontain numbers");
+        }
+        
+        while (true) {
+            System.out.println("Edit the Product Category? (Current = " + prod.getCategory() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Category");
+                category_ = prod.getCategory();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                category_ = input;
+                break;
+            }
+            System.out.println("Invalid Category id. Must only bontain numbers");
+        }
+        
+        while (true) {
+            System.out.println("Edit the Product Quantity (Current = " + prod.getQuantity() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Category");
+                category_ = prod.getQuantity();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                category_ = input;
+                break;
+            }
+            System.out.println("Invalid Category id. Must only bontain numbers");
+        }
+        
+        while (true) {
+            System.out.println("Edit the Product Price? (Current = " + prod.getUnitPrice() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Category");
+                unitprice_ = prod.getUnitPrice();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                unitprice_ = input;
+                break;
+            }
+            System.out.println("Invalid Category id. Must only bontain numbers");
+        }
+        
+        while (true) {
+            System.out.println("Edit the Product Name? (Current = " + prod.getProductName() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Category");
+                productname_ = prod.getProductName();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                productname_ = input;
+                break;
+            }
+            System.out.println("Invalid Category id. Must only bontain numbers");
+        }
+        
+        while (true) {
+            System.out.println("Edit the Product Description? (Current = " + prod.getDescription() + "): ");
+            String input = s.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Skipping Category");
+                description_ = prod.getDescription();
+                break;
+            }
+            if (input.matches("[a-zA-Z]+")) {
+                description_ = input;
+                break;
+            }
+            System.out.println("Invalid Category id. Must only bontain numbers");
+        }
+        
+        // make updated product
+        Product updatedProd = new Product(
+                prod.getProductId(),
+                providerid_,
+                category_,
+                quantity_,
+                unitprice_,
+                productname_,
+                description_
+        );
+
+        //send it to the db
+        prodDbOp.editProductRecord(updatedProd);
     }
     
     private static void viewProductPriceChangeHistory() {

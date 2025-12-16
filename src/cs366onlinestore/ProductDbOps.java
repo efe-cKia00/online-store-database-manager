@@ -58,7 +58,7 @@ public class ProductDbOps {
             pstmt.setString(1, productName);
             pstmt.setInt(2, productId);
             
-            // Execute the insert
+            // Execute the query
             ResultSet rs = pstmt.executeQuery();
             
             if(rs.next()) {
@@ -66,10 +66,34 @@ public class ProductDbOps {
                 int providerid = rs.getInt("provider_id");
                 int categoryid = rs.getInt("category_id");
                 String productname = rs.getString("product_name");
-                String description = rs.getString("")
+                String description = rs.getString("description");
+                
             }
         } catch (SQLException e) {
         
+        }
+    }
+    
+    public void editProductRecord(Product prod) {
+        try {
+            String updateCustomer = "UPDATE product "
+                    + "SET firstname = ?, lastname = ?, email = ?, "
+                    + "phone = ?, street = ?, city = ?, state = ?, zip = ? "
+                    + "WHERE customer_id = ?";
+            PreparedStatement pstmt = dbcon.prepareStatement(updateCustomer);
+            pstmt.setString(1, prod.getProviderId());
+            pstmt.setString(2, prod.getLastName());
+            pstmt.setString(3, prod.getEmail());
+            pstmt.setString(4, prod.getPhone());
+            pstmt.setString(5, prod.getStreet());
+            pstmt.setString(6, prod.getCity());
+            pstmt.setString(7, prod.getState());
+            pstmt.setString(8, cust.getZip());
+            pstmt.setInt(9, cust.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error Updating Customer: " + e.getLocalizedMessage());
         }
     }
 }
