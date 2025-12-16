@@ -1,6 +1,4 @@
-
 package cs366onlinestore;
-
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Customer {
-    
+
     private int customerId;
     private String firstName;
     private String lastName;
@@ -21,18 +19,18 @@ public class Customer {
     private String city;
     private String state;
     private String zip;
-    
-        // ---------- Constructors ----------    
-    public Customer(
-        String firstName,
-        String lastName,
-        String email,
-        String phone,
-        String street,
-        String city,
-        String state,
-        String zip) {
 
+    // ---------- Constructors ----------    
+    public Customer(int id,
+                    String firstName,
+                    String lastName,
+                    String email,
+                    String phone,
+                    String street,
+                    String city,
+                    String state,
+                    String zip) {
+        this.customerId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -42,18 +40,11 @@ public class Customer {
         this.state = state;
         this.zip = zip;
     }
-    
-        // ---------- Getters / Setters ----------
 
-    
-    public int getCustomerId() {
+    // ---------- Getters / Setters ----------
+    public int getId(){
         return customerId;
     }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -93,10 +84,8 @@ public class Customer {
     public String getZip() {
         return zip;
     }
-    
-    
-       // ---------- Methods from UML ----------
 
+    // ---------- Methods from UML ----------
     public void updateEmail(String email) {
         this.email = email;
     }
@@ -120,10 +109,10 @@ public class Customer {
     public String getFullName() {
         return firstName + " " + lastName;
     }
-    
+
     /**
-     * Deletes the given customer from the system.
-     * In a real application this would call your DatabaseManager / DAO.
+     * Deletes the given customer from the system. In a real application this
+     * would call your DatabaseManager / DAO.
      */
     public void deleteCustomer(Customer cust) {
         // TODO: implement deletion logic (e.g., remove from DB or collection)
@@ -131,26 +120,26 @@ public class Customer {
     }
 
     /**
-     * Returns all orders for the given customer.
-     * For now this just returns an empty list so the method compiles.
+     * Returns all orders for the given customer. For now this just returns an
+     * empty list so the method compiles.
      */
     public List<CustomerOrder> listAllOrders(Customer cust) {
         // TODO: query database or order repository using cust.customerId
         return new ArrayList<>();
     }
-    
+
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip=" + zip +
-                '}';
+        return "Customer{"
+                + "customerId=" + customerId
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", email='" + email + '\''
+                + ", phone='" + phone + '\''
+                + ", street='" + street + '\''
+                + ", city='" + city + '\''
+                + ", state='" + state + '\''
+                + ", zip=" + zip
+                + '}';
     }
 }
