@@ -1,15 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package cs366onlinestore;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -525,39 +520,48 @@ public class CS366OnlineStore {
     }
 
     private static void addNewProduct(Scanner s) {
-        int providerId, category, quantity;
+        int providerId, categoryId, quantity;
         float unitPrice;
         String productName, description;
 
         // PROVIDER ID
+        List<Integer> validIds = prodDbOp.getProviderInfo();
+
         while (true) {
             System.out.println("Enter the provider id: ");
             try {
                 providerId = s.nextInt();
-                s.nextLine(); // consume newline
-                if (providerId > 0) {
+                s.nextLine();
+
+                if (validIds.contains(providerId)) {
                     break;
                 }
-                System.out.println("Invalid provider id. Must be a positive number.");
+
+                System.out.println("Invalid provider id. Please choose a valid ID from the list above.");
+
             } catch (Exception e) {
                 System.out.println("Invalid input. Only numbers allowed.");
-                s.nextLine(); // clear invalid input
+                s.nextLine();
             }
         }
 
         // CATEGORY
+        List<Integer> validCategoryIds = prodDbOp.getCategoryInfo();
         while (true) {
-            System.out.println("Enter the category number: ");
+            System.out.println("Enter the category id: ");
             try {
-                category = s.nextInt();
-                s.nextLine(); // consume newline
-                if (category > 0) {
+                categoryId = s.nextInt();
+                s.nextLine();
+
+                if (validCategoryIds.contains(categoryId)) {
                     break;
                 }
-                System.out.println("Invalid category id. Must be a positive number.");
+
+                System.out.println("Invalid category id. Please choose a valid ID from the list above.");
+
             } catch (Exception e) {
                 System.out.println("Invalid input. Only numbers allowed.");
-                s.nextLine(); // clear invalid input
+                s.nextLine();
             }
         }
 
@@ -614,7 +618,7 @@ public class CS366OnlineStore {
         }
 
         // creating product object (placeholder id)
-        Product prod = new Product(0, providerId, category, quantity, unitPrice, productName, description);
+        Product prod = new Product(0, providerId, categoryId, quantity, unitPrice, productName, description);
 
         // insert known data into db
         prodDbOp.insertProductInDb(prod);
@@ -624,6 +628,7 @@ public class CS366OnlineStore {
         System.out.println("Enter the details of the product");
         System.out.print("What's the name of the product: ");
         String productname = s.nextLine();
+        List<Integer> validCategoryIds = prodDbOp.getCategoryInfo();
         System.out.print("What is the product category number: ");
         int category = s.nextInt();
 
@@ -648,6 +653,7 @@ public class CS366OnlineStore {
         System.out.println("=====================================");
 
         // PROVIDER ID
+        List<Integer> validIds = prodDbOp.getProviderInfo();
         while (true) {
             System.out.println("Edit the Provider ID? (Current = " + prod.getProviderId() + "): ");
             String input = s.nextLine().trim();
@@ -658,11 +664,10 @@ public class CS366OnlineStore {
             }
             try {
                 providerid_ = Integer.parseInt(input);
-                if (providerid_ > 0) {
-
+                if (validIds.contains(providerid_)) {
                     break;
                 }
-                System.out.println("Invalid Provider ID. Must be a positive number");
+                System.out.println("Invalid Provider ID. Must be a valid provider id");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid Provider ID. Must only contain numbers");
             }
@@ -680,7 +685,7 @@ public class CS366OnlineStore {
             }
             try {
                 category_ = Integer.parseInt(input);
-                if (category_ > 0) {
+               if (validCategoryIds.contains(category_)) {
                     break;
                 }
                 System.out.println("Invalid Category. Must be a positive number");
