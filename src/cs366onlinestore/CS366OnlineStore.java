@@ -23,6 +23,7 @@ public class CS366OnlineStore {
     private static Connection dbcon;
     private static CustomerDbOps custDbOp;
     private static CustomerOrderDbOps custOrderDbOp;
+    private static ProductDbOps prodDbOp;
 
     /**
      * @param args the command line arguments
@@ -58,7 +59,8 @@ public class CS366OnlineStore {
             int choice = getUserInput(scan);
 
             switch (choice) {
-                case 1 -> { //runProductMenu
+                case 1 -> {
+                    runProductMenu(scan);
                 }
                 case 2 ->
                     runCustomerMenu(scan);
@@ -489,7 +491,7 @@ public class CS366OnlineStore {
         AddCustomer(scan);
     }
 
-    public static void AddCustomer(Scanner s) {
+    /*public static void AddCustomer(Scanner s) {
         System.out.println("Enter First Name:");
         String fname = s.nextLine();
         System.out.println("Enter Last Name: ");
@@ -512,6 +514,155 @@ public class CS366OnlineStore {
 
         // insert known data into db
         custDbOp.insertCustomerInDb(cust);
-    }
+    }*/
 
+    private static void runProductMenu(Scanner s) {
+        boolean inMenu = true;
+        while (inMenu) {
+            System.out.println("\n--- PRODUCTS MANAGEMENT MENU ---");
+            System.out.println("1) Add new product.");
+            System.out.println("2) Edit existing product.");
+            System.out.println("3) View product price change history.");
+            System.out.println("4) View most popular items.");
+            System.out.println("5) View most expensive product");
+            System.out.println("0) Back to Main Menu");
+            System.out.print("Select Action: ");
+            
+            int choice = getUserInput(s);
+            
+            switch (choice){
+                case 1 ->
+                    addNewProduct(s);
+                case 2 ->
+                    editExistingProduct(s);
+                case 3 ->
+                    viewProductPriceChangeHistory();
+                case 4 ->
+                    viewMostPopularItems();
+                case 5 ->
+                    viewMostExpensiveProduct();
+                case 0 ->
+                    inMenu = false;
+                default ->
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+ 
+    private static void addNewProduct(Scanner s) {
+    int providerId, category, quantity;
+    float unitPrice;
+    String productName, description;
+    
+    // PROVIDER ID
+    while (true) {
+        System.out.println("Enter the provider id: ");
+        try {
+            providerId = s.nextInt();
+            s.nextLine(); // consume newline
+            if (providerId > 0) {
+                break;
+            }
+            System.out.println("Invalid provider id. Must be a positive number.");
+        } catch (Exception e) {
+            System.out.println("Invalid input. Only numbers allowed.");
+            s.nextLine(); // clear invalid input
+        }
+    }
+    
+    // CATEGORY
+    while (true) {
+        System.out.println("Enter the category number: ");
+        try {
+            category = s.nextInt();
+            s.nextLine(); // consume newline
+            if (category > 0) {
+                break;
+            }
+            System.out.println("Invalid category id. Must be a positive number.");
+        } catch (Exception e) {
+            System.out.println("Invalid input. Only numbers allowed.");
+            s.nextLine(); // clear invalid input
+        }
+    }
+    
+    // PRODUCT NAME
+    while (true) {
+        System.out.println("Enter the product name: ");
+        productName = s.nextLine().trim();
+        if (productName.matches("^[a-zA-Z0-9\\s]+$") && !productName.isEmpty()) {
+            break;
+        }
+        System.out.println("Invalid product name. Letters, numbers, and spaces allowed.");
+    }
+    
+    // DESCRIPTION
+    while (true) {
+        System.out.println("Enter the product description: ");
+        description = s.nextLine().trim();
+        if (!description.isEmpty()) {
+            break;
+        }
+        System.out.println("Invalid description. Cannot be empty.");
+    }
+    
+    // QUANTITY
+    while (true) {
+        System.out.println("Enter the quantity: ");
+        try {
+            quantity = s.nextInt();
+            s.nextLine(); // consume newline
+            if (quantity >= 0) {
+                break;
+            }
+            System.out.println("Invalid quantity. Must be zero or positive.");
+        } catch (Exception e) {
+            System.out.println("Invalid input. Only numbers allowed.");
+            s.nextLine(); // clear invalid input
+        }
+    }
+    
+    // UNIT PRICE
+    while (true) {
+        System.out.println("Enter the unit price: ");
+        try {
+            unitPrice = s.nextFloat();
+            s.nextLine(); // consume newline
+            if (unitPrice > 0) {
+                break;
+            }
+            System.out.println("Invalid unit price. Must be a positive number.");
+        } catch (Exception e) {
+            System.out.println("Invalid input. Only numbers allowed.");
+            s.nextLine(); // clear invalid input
+        }
+    }
+    
+    // creating product object (placeholder id)
+    Product prod = new Product(0, providerId, category, quantity, unitPrice, productName, description);
+    
+    // insert known data into db
+    prodDbOp.insertProductInDb(prod);
+    }
+    
+    private static void editExistingProduct(Scanner s) {
+        System.out.println("Enter the details of the product");
+        System.out.print("What's the name of the product: ");
+        String productname = s.next();
+        System.out.print("What is the product category: ");
+        int category = s.nextInt();
+        
+        
+    }
+    
+    private static void viewProductPriceChangeHistory() {
+        
+    }
+    
+    private static void viewMostPopularItems() {
+    }
+    
+    private static void viewMostExpensiveProduct() {
+        
+    }
 }

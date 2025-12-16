@@ -1,40 +1,38 @@
-
 package cs366onlinestore;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Product {
     
     private int productId;
     private int providerId;
-    private String category;
-    private String name;
-    private String description;
+    private int categoryId;
     private int quantity;
     private float unitPrice;
-    
+    private String name;
+    private String description;       
     
     // ---------- Constructors ----------
-
-    public Product() {}
-    
     public Product(int productId,
                    int providerId,
-                   String category,
-                   String name,
-                   String description,
+                   int categoryId,
                    int quantity,
-                   float unitPrice) {
-
+                   float unitPrice,
+                   String name,
+                   String description) {
         this.productId = productId;
         this.providerId = providerId;
-        this.category = category;
-        this.name = name;
-        this.description = description;
+        this.categoryId = categoryId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+        this.name = name;
+        this.description = description;    
     }
     
     // ---------- Getters / Setters ----------
@@ -54,12 +52,12 @@ public class Product {
         this.providerId = providerId;
     }
 
-    public String getCategory() {
-        return category;
+    public int getCategory() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategory(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -134,12 +132,16 @@ public class Product {
         return "Product{" +
                 "productId=" + productId +
                 ", providerId=" + providerId +
-                ", category='" + category + '\'' +
+                ", category='" + categoryId + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +
                 '}';
+    }
+
+    String getProductName() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
