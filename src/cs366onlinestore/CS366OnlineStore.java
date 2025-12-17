@@ -844,6 +844,7 @@ public class CS366OnlineStore {
                 System.out.println("Category Name: " + rs.getString("category_name"));
                 System.out.println("Product Price: " + rs.getString("unit_price"));
             }
+            s.nextLine();
         } catch (SQLException e) {
             System.out.println("Error getting products: " + e.getLocalizedMessage());
         }
