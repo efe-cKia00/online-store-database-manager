@@ -69,9 +69,9 @@ The application runs as a console program. On startup, it connects to the Postgr
 
 ## Authors
 
-- [Zachary Adolphsen][https://www.linkedin.com/in/zach-adolphsen/]
-- [Efe Awo-Osagie][https://www.linkedin.com/in/efe-awo-osagie-b4b796381/]
-- [Kal Larson][https://github.com/kalanlarson]
+- [Zachary Adolphsen](https://www.linkedin.com/in/zach-adolphsen/)
+- [Efe Awo-Osagie](https://www.linkedin.com/in/efe-awo-osagie-b4b796381/)
+- [Kal Larson](https://github.com/kalanlarson)
 
 ## License
 
