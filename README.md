@@ -49,6 +49,7 @@ src/cs366onlinestore/
 	- Update the credentials in `dbManager.java` if needed:
 	  - Default: `username=server_username`, `password=password`, `jdbcURL=jdbc:postgresql://url`
 	- Import or create the required tables (customer, product, provider, order, etc.).
+    > The dbManager.jdbc, dbManager.username, and dbManager.password would need to be configured for your specific localhost PostgreSQL database
     > This source code does NOT contain the SQL script containing the dummy data needed to build the PostgreSQL database.
 
 3. **Add the PostgreSQL JDBC Driver:**

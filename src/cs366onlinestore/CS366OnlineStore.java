@@ -11,6 +11,7 @@ import java.util.Scanner;
  * @author Efe Awo-Osagie
  * @author Kal Larson
  */
+
 public class CS366OnlineStore {
 
     private static dbManager dbManager = new dbManager();

@@ -23,5 +23,3 @@
 ### OS Specific (Optional but recommended) ###
 .DS_Store
 Thumbs.db
-
-/src/cs366onlinestore/dbManager.java
