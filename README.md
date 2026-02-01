@@ -1,7 +1,7 @@
 
 # Online Store Management System
 
-Online Store Management System is a Java-based software application for tracking products, customers, orders, and providers. The authors designed this application as their final project for their datbase system course and it demonstrates their expert use of JDBC with a PostgreSQL database to manage an e-commerce backend.
+Online Store Management System is a Java-based software application for tracking products, customers, orders, and providers. The authors designed this application as their final project for their database system course, and it demonstrates their expert use of Java, PostgreSQL JDBC, and PostgreSQL server to implement and manage an e-commerce backend.
 
 ## Features
 
@@ -49,7 +49,7 @@ src/cs366onlinestore/
 	- Update the credentials in `dbManager.java` if needed:
 	  - Default: `username=server_username`, `password=password`, `jdbcURL=jdbc:postgresql://url`
 	- Import or create the required tables (customer, product, provider, order, etc.).
-    > The dbManager.jdbc, dbManager.username, and dbManager.password would need to be configured for your specific localhost PostgreSQL database
+    > The dbManager.jdbc, dbManager.username, and dbManager.password would need to be configured for your specific localhost PostgreSQL database.
     > This source code does NOT contain the SQL script containing the dummy data needed to build the PostgreSQL database.
 
 3. **Add the PostgreSQL JDBC Driver:**
